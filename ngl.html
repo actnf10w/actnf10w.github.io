@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Send Austin a Message</title>
+
+  <style>
+    :root {
+      --accent: #78a9e8;
+      --accent-bright: #a9ccf5;
+      --text: #ffffff;
+      --muted: #b8c4d4;
+      --panel: rgba(7, 18, 35, 0.88);
+      --border: rgba(170, 205, 245, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+
+      background:
+        linear-gradient(
+          rgba(3, 10, 22, 0.68),
+          rgba(3, 10, 22, 0.82)
+        ),
+        url("https://files.catbox.moe/dxts4l.jpeg") center / cover fixed;
+
+      background-color: #071223;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 540px;
+      padding: 32px;
+
+      border: 1px solid var(--border);
+      border-radius: 22px;
+
+      background: var(--panel);
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5);
+
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      text-align: center;
+      font-size: 32px;
+    }
+
+    .subtitle {
+      margin: 0 0 24px;
+
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 180px;
+      padding: 15px;
+      resize: vertical;
+
+      color: var(--text);
+      background: #000000;
+
+      border: 1px solid var(--border);
+      border-radius: 12px;
+
+      font: inherit;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    textarea::placeholder {
+      color: #9caabd;
+    }
+
+    textarea:focus {
+      outline: 2px solid var(--accent);
+      border-color: var(--accent);
+    }
+
+    .privacy {
+      margin-top: 18px;
+
+      color: #8f9baa;
+      text-align: center;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .privacy summary {
+      display: inline-block;
+
+      cursor: pointer;
+      color: #929daa;
+      user-select: none;
+    }
+
+    .privacy summary:hover {
+      color: #c2ccd8;
+    }
+
+    .privacy-text {
+      max-width: 440px;
+      margin: 10px auto 0;
+      padding: 10px 12px;
+
+      color: #b8c4d4;
+      text-align: left;
+      background: rgba(0, 0, 0, 0.22);
+
+      border-left: 2px solid #607d9f;
+      border-radius: 4px;
+
+      white-space: normal;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 18px;
+      padding: 14px;
+
+      color: #071223;
+      background: var(--accent);
+
+      border: 0;
+      border-radius: 12px;
+
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+
+      transition: 0.2s ease;
+    }
+
+    button:hover {
+      background: var(--accent-bright);
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      cursor: wait;
+      opacity: 0.65;
+      transform: none;
+    }
+
+    .footer {
+      margin-top: 24px;
+
+      color: var(--muted);
+      text-align: center;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .footer a,
+    .instagram-button {
+      color: var(--accent-bright);
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .footer a:hover,
+    .instagram-button:hover {
+      text-decoration: underline;
+    }
+
+    .thank-you {
+      display: none;
+      text-align: center;
+    }
+
+    .thank-you h2 {
+      margin-top: 0;
+      font-size: 30px;
+    }
+
+    .thank-you p {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .instagram-button {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 12px 18px;
+
+      color: #071223;
+      background: var(--accent);
+      border-radius: 10px;
+    }
+
+    .instagram-button:hover {
+      color: #071223;
+      background: var(--accent-bright);
+      text-decoration: none;
+    }
+
+    .hidden-field {
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        padding: 24px 20px;
+      }
+
+      h1 {
+        font-size: 27px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="card">
+
+    <section id="message-section">
+      <h1>Send Austin a Message</h1>
+
+      <p class="subtitle">
+        Send an anonymous message below.
+        Please do not include passwords or other sensitive information.
+      </p>
+
+      <form
+        id="message-form"
+        action="https://formsubmit.co/a.yulangting@gmail.com"
+        method="POST"
+        onsubmit="prepareForm()"
+      >
+        <textarea
+          name="message"
+          placeholder="Write your message here..."
+          maxlength="1000"
+          required
+        ></textarea>
+
+        <!--
+          Privacy consent text:
+
+          By pressing "Submit," you agree that your message and basic
+          technical information—including your device type, operating
+          system, browser, screen size, language, time zone, and user
+          agent—may be collected and sent to Austin for message delivery,
+          spam prevention, and troubleshooting.
+
+          Do not submit passwords or other sensitive information.
+        -->
+
+        <input
+          type="hidden"
+          name="_subject"
+          value="New message for Austin"
+        >
+
+        <input
+          type="hidden"
+          name="_captcha"
+          value="false"
+        >
+
+        <input
+          type="hidden"
+          name="_next"
+          id="next-page"
+        >
+
+        <!-- Spam honeypot -->
+        <input
+          class="hidden-field"
+          type="text"
+          name="_honey"
+          tabindex="-1"
+          autocomplete="off"
+        >
+
+        <!-- Technical information -->
+        <input
+          type="hidden"
+          name="device_type"
+          id="device_type"
+        >
+
+        <input
+          type="hidden"
+          name="operating_system"
+          id="operating_system"
+        >
+
+        <input
+          type="hidden"
+          name="browser"
+          id="browser"
+        >
+
+        <input
+          type="hidden"
+          name="user_agent"
+          id="user_agent"
+        >
+
+        <input
+          type="hidden"
+          name="screen_size"
+          id="screen_size"
+        >
+
+        <input
+          type="hidden"
+          name="language"
+          id="language"
+        >
+
+        <input
+          type="hidden"
+          name="timezone"
+          id="timezone"
+        >
+
+        <input
+          type="hidden"
+          name="submitted_at"
+          id="submitted_at"
+        >
+
+        <button id="submit-button" type="submit">
+          Submit
+        </button>
+      </form>
+
+      <div class="footer">
+        <a
+          href="https://www.instagram.com/austinyu_1e56"
+          target="_blank"
+          rel="noopener"
+        >
+          Keep tuned on my Instagram stories
+        </a>
+      </div>
+
+      <!-- Privacy information at the bottom of the webpage card -->
+      <details class="privacy">
+        <summary>Privacy</summary>
+
+        <div class="privacy-text">
+          By pressing “Submit,” you agree that your message and basic
+          technical information—including your device type, operating
+          system, browser, screen size, language, time zone, and user
+          agent—may be collected and sent to Austin for message delivery,
+          spam prevention, and troubleshooting.
+
+          Do not submit passwords or other sensitive information.
+        </div>
+      </details>
+    </section>
+
+    <section id="thank-you-section" class="thank-you">
+      <h2>Thank you!</h2>
+
+      <p>
+        Your message has been sent to Austin.
+      </p>
+
+      <p>
+        Keep tuned on my Instagram stories.
+      </p>
+
+      <a
+        class="instagram-button"
+        href="https://www.instagram.com/austinyu_1e56"
+        target="_blank"
+        rel="noopener"
+      >
+        Visit Instagram
+      </a>
+
+      <details class="privacy">
+        <summary>Privacy</summary>
+
+        <div class="privacy-text">
+          By pressing “Submit,” you agree that your message and basic
+          technical information—including your device type, operating
+          system, browser, screen size, language, time zone, and user
+          agent—may be collected and sent to Austin for message delivery,
+          spam prevention, and troubleshooting.
+
+          Do not submit passwords or other sensitive information.
+        </div>
+      </details>
+    </section>
+
+  </main>
+
+  <script>
+    const submitButton = document.getElementById("submit-button");
+
+    function getDeviceType() {
+      const width = window.innerWidth;
+
+      if (width <= 600) {
+        return "Mobile";
+      }
+
+      if (width <= 1024) {
+        return "Tablet";
+      }
+
+      return "Desktop";
+    }
+
+    function getOperatingSystem() {
+      const userAgent = navigator.userAgent;
+
+      if (/Android/i.test(userAgent)) return "Android";
+      if (/iPhone|iPad|iPod/i.test(userAgent)) return "iOS";
+      if (/Windows/i.test(userAgent)) return "Windows";
+      if (/Macintosh|Mac OS X/i.test(userAgent)) return "macOS";
+      if (/Linux/i.test(userAgent)) return "Linux";
+
+      return "Unknown";
+    }
+
+    function getBrowser() {
+      const userAgent = navigator.userAgent;
+
+      if (/Edg/i.test(userAgent)) {
+        return "Microsoft Edge";
+      }
+
+      if (/Firefox/i.test(userAgent)) {
+        return "Mozilla Firefox";
+      }
+
+      if (/Chrome/i.test(userAgent) && !/Edg/i.test(userAgent)) {
+        return "Google Chrome";
+      }
+
+      if (/Safari/i.test(userAgent) && !/Chrome/i.test(userAgent)) {
+        return "Safari";
+      }
+
+      return "Other or unknown browser";
+    }
+
+    function prepareForm() {
+      const thankYouUrl =
+        window.location.origin +
+        window.location.pathname +
+        "?sent=1";
+
+      document.getElementById("next-page").value = thankYouUrl;
+
+      document.getElementById("device_type").value =
+        getDeviceType();
+
+      document.getElementById("operating_system").value =
+        getOperatingSystem();
+
+      document.getElementById("browser").value =
+        getBrowser();
+
+      document.getElementById("user_agent").value =
+        navigator.userAgent;
+
+      document.getElementById("screen_size").value =
+        window.screen.width + " x " + window.screen.height;
+
+      document.getElementById("language").value =
+        navigator.language || "Unknown";
+
+      document.getElementById("timezone").value =
+        Intl.DateTimeFormat().resolvedOptions().timeZone || "Unknown";
+
+      document.getElementById("submitted_at").value =
+        new Date().toISOString();
+
+      submitButton.disabled = true;
+      submitButton.textContent = "Sending...";
+    }
+
+    const queryParams = new URLSearchParams(
+      window.location.search
+    );
+
+    if (queryParams.get("sent") === "1") {
+      document.getElementById("message-section").style.display = "none";
+      document.getElementById("thank-you-section").style.display = "block";
+    }
+  </script>
+</body>
+</html>
